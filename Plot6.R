@@ -1,27 +1,25 @@
 library(ggplot2)
  
 # Loading the data frames.
-nei <- readRDS("summarySCC_PM25.rds")
-scc <- readRDS("Source_Classification_Code.rds")
+NEI <- readRDS("summarySCC_PM25.rds")
+SCC <- readRDS("Source_Classification_Code.rds")
 
 # Subsetting of the NEI data for vehicles
-vehicles <- grepl("vehicle", scc$scc.Level.Two, ignore.case=TRUE)
-vehiclesscc <- scc[vehicles,]$scc
-vehiclesnei <- nei[nei$scc %in% vehiclesscc,]
+vehicles <- grepl("vehicle", SCC$SCC.Level.Two, ignore.case=TRUE)
+vehiclesSCC <- SCC[vehicles,]$SCC
+vehiclesNEI <- NEI[NEI$SCC %in% vehiclesSCC,]
 
-# Subset the vehicles NEI data by each city's fip and add city name.
-vehiclesBaltimorenei <- vehiclesnei[vehiclesnei$fips=="24510",]
-vehiclesBaltimorenei$city <- "Baltimore City"
+# Subsetting the vehicles NEI data by city and combining the datasets.
+vehiclesBaltimoreNEI <- vehiclesNEI[vehiclesNEI$fips=="24510",]
+vehiclesBaltimoreNEI$city <- "Baltimore City"
+vehiclesLANEI <- vehiclesNEI[vehiclesNEI$fips=="06037",]
+vehiclesLANEI$city <- "Los Angeles County"
 
-vehiclesLAnei <- vehiclesnei[vehiclesnei$fips=="06037",]
-vehiclesLAnei$city <- "Los Angeles County"
-
-# Combine the two subsets with city name into one data frame
-bothnei <- rbind(vehiclesBaltimorenei,vehiclesLAnei)
+bothNEI <- rbind(vehiclesBaltimoreNEI,vehiclesLANEI)
 
 png("plot6.png",width=480,height=480,units="px",bg="transparent")
 
-ggp <- ggplot(bothnei, aes(x=factor(year), y=Emissions, fill=city)) +
+ggp <- ggplot(bothNEI, aes(x=factor(year), y=Emissions, fill=city)) +
  geom_bar(aes(fill=year),stat="identity") +
  facet_grid(scales="free", space="free", .~city) +
  guides(fill=FALSE) + theme_bw() +
