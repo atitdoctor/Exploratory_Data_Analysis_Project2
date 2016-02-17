@@ -5,10 +5,10 @@ nei <- readRDS("summarySCC_PM25.rds")
 scc <- readRDS("Source_Classification_Code.rds")
 
 # Subsetting the coal combustion related to NEI data
-combustion <- grepl("comb", scc$scc.Level.One, ignore.case=TRUE)
-coal <- grepl("coal", scc$scc.Level.Four, ignore.case=TRUE) 
-coalComb <- (combustion & coal)
-combustionscc <- scc[coalComb,]$scc
+combustionRelated <- grepl("comb", scc$scc.Level.One, ignore.case=TRUE)
+coalRelated <- grepl("coal", scc$scc.Level.Four, ignore.case=TRUE) 
+coalCombustion <- (combustionRelated & coalRelated)
+combustionscc <- scc[coalCombustion,]$scc
 combustionnei <- nei[nei$scc %in% combustionscc,]
 
 png("plot4.png",width=480,height=480,units="px",bg="transparent")
