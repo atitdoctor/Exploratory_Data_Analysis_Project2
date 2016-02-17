@@ -13,7 +13,7 @@ aggTotalsBaltimore <- aggregate(Emissions ~ year, baltimorenei,sum)
 png("plot3.png",width=480,height=480,units="px",bg="transparent")
 
 ggp <- ggplot(baltimorenei,aes(factor(year),Emissions,fill=type)) +
-  geom_bar(stat="identity",fill="steelblue",width=0.75) +
+  geom_bar(stat="identity") +
   theme_bw() + guides(fill=FALSE)+
   facet_grid(.~type,scales = "free",space="free") + 
   labs(x="year", y=expression("Total PM"[2.5]*" Emission (Tons)")) + 
