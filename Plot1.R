@@ -4,7 +4,7 @@ nei <- readRDS("summarySCC_PM25.rds")
 scc <- readRDS("Source_Classification_Code.rds")
 
 # Aggregate (sum) total emissions by year
-aggTotals <- aggregate(Emissions ~ year,NEI, sum)
+aggTotals <- aggregate(Emissions ~ year,nei, sum)
 
 
 png("plot1.png",width=480,height=480,units="px",bg="transparent")
